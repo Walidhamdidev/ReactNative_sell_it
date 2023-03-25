@@ -3,6 +3,7 @@ import React from "react";
 import AppText from "../components/Text";
 import colors from "../config/colors";
 import ListItem from "../components/lists/ListItem";
+import { useAuth } from "../hooks/useAuth";
 
 interface Props {
   route: any;
@@ -10,6 +11,8 @@ interface Props {
 
 const ListingDetailsScreen = ({ route }: Props) => {
   const { title, image, price } = route?.params?.item;
+
+  const { user } = useAuth();
 
   return (
     <ScrollView
@@ -23,9 +26,9 @@ const ListingDetailsScreen = ({ route }: Props) => {
       </View>
       <ListItem
         renderRightActions={() => null}
-        title="Mosh"
-        subtitle="A software developer"
-        image={require("../assets/mosh.jpg")}
+        title={user?.username ?? "username"}
+        subtitle={user?.email ?? "email@exmple.com"}
+        image={require("../assets/user_profile.webp")}
         onPress={() => {
           console.log("My name ");
         }}

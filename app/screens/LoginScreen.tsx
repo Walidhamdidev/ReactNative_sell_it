@@ -8,9 +8,11 @@ import {
   SubmitButton,
   AppForm,
 } from "../components/forms";
-import apiAuth from "../api/auth";
-import { useContext, useState } from "react";
-import AuthContext from "../auth/context";
+import authApi from "../api/auth";
+import { useAuth } from "../hooks/useAuth";
+import { useState } from "react";
+import ActivityIndicator from "../components/ActivityIndicator";
+import useApi from "../hooks/useApi";
 
 const validationSchema = Yup.object({
   email: Yup.string().required().email().label("Email"),
@@ -18,50 +20,55 @@ const validationSchema = Yup.object({
 });
 
 const LoginScreen = () => {
-  const authContext = useContext(AuthContext);
+  const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
+  const loginApi = useApi(authApi.login);
 
-  const handleSubmit = async ({ email, password }: any) => {
-    const response = await apiAuth.login(email, password);
-    if (!response.ok) return setLoginFailed(true);
-    setLoginFailed(false);
-    const { user } = response.data as any;
-    authContext.setUser(user);
-  };
+  const handleSubmit = async ({ email, password }: any) =>
+    // { resetForm }: { resetForm: () => void }
+    {
+      const result = await loginApi.request(email, password);
+      if (!result.ok) return setLoginFailed(true);
+      setLoginFailed(false);
+      const data = result.data as any;
+      logIn(data);
+    };
 
   return (
-    <Wrapper style={styles.container}>
-      <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+    <>
+      <ActivityIndicator visible={loginApi.loading} />
+      <Wrapper style={styles.container}>
+        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
 
-      <AppForm
-        initialValues={{ email: "", password: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {loginFailed && (
-          <ErrorMessage
-            visible={loginFailed}
-            error="Incorrect email and/or password."
+        <AppForm
+          initialValues={{ email: "", password: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {loginFailed && (
+            <ErrorMessage visible={loginFailed} error={loginApi.error} />
+          )}
+          <AppFormField
+            icon="email"
+            name="email"
+            placeholder="Email"
+            keyboardType="email-address"
+            textContentType="emailAddress"
+            autoCapitalize="none"
+            autoCorrect={false}
           />
-        )}
-        <AppFormField
-          icon="email"
-          name="email"
-          placeholder="Email"
-          autoCorrect={false}
-          keyboardType="email-address"
-          textContentType="emailAddress"
-        />
-        <AppFormField
-          icon="lock"
-          name="password"
-          placeholder="Password"
-          secureTextEntry
-          autoCorrect={false}
-        />
-        <SubmitButton label="Login" />
-      </AppForm>
-    </Wrapper>
+          <AppFormField
+            icon="lock"
+            name="password"
+            placeholder="Password"
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <SubmitButton label="Login" />
+        </AppForm>
+      </Wrapper>
+    </>
   );
 };
 

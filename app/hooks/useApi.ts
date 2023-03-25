@@ -4,7 +4,7 @@ export default function useApi(apiFunc: (...args: any) => any) {
   const [data, setData] = useState<
     { id: number; title: string; image: string; price: number }[]
   >([]);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const request = async (...args: any) => {
@@ -12,21 +12,10 @@ export default function useApi(apiFunc: (...args: any) => any) {
     const response = await apiFunc(...args);
     setLoading(false);
 
-    if (!response.ok) return setError(true);
-
-    setError(false);
-    const allData = response.data as any;
-    const listings: any = [];
-    allData["data"].map((item: any) => {
-      const obj = {
-        id: item.id,
-        title: item["attributes"]["title"],
-        image: item["attributes"]["images"],
-        price: item["attributes"]["price"],
-      };
-      listings.push(obj);
-    });
-    setData(listings);
+    setError(response.data["error"]["message"]);
+    // setError(!response.ok);
+    setData(response.data);
+    return response;
   };
 
   return { data, error, loading, request };

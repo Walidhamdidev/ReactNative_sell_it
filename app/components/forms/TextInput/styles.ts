@@ -3,9 +3,8 @@ import colors from "../../../config/colors";
 
 export default StyleSheet.create({
   container: {
-    width: "100%",
     borderRadius: 50,
-    paddingHorizontal: 15,
+    paddingLeft: 10,
     paddingVertical: 9,
     backgroundColor: colors.light,
     flexDirection: "row",

@@ -4,7 +4,7 @@ import Card from "../components/Card";
 import colors from "../config/colors";
 import routes from "../navigation/routes";
 import api from "../api/listings";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AppText from "../components/Text";
 import AppButton from "../components/Button";
 import ActivityIndicator from "../components/ActivityIndicator";
@@ -16,8 +16,21 @@ interface Props {
 
 const ListingsScreen = ({ navigation }: Props) => {
   const getListingApi = useApi(api.getListings);
+  const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     getListingApi.request();
+    const allData = getListingApi.data as any;
+    const listings: any = [];
+    allData["data"].map((item: any) => {
+      const obj = {
+        id: item.id,
+        title: item["attributes"]["title"],
+        image: item["attributes"]["images"],
+        price: item["attributes"]["price"],
+      };
+      listings.push(obj);
+    });
+    setData(listings);
   }, []);
 
   return (
@@ -34,7 +47,7 @@ const ListingsScreen = ({ navigation }: Props) => {
         </View>
       )}
       <FlatList
-        data={getListingApi.data}
+        data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
           return (

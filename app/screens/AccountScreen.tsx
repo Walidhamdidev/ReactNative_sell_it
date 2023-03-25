@@ -4,6 +4,8 @@ import colors from "../config/colors";
 import ListItem from "../components/lists/ListItem";
 import Icon from "../components/Icon";
 import routes from "../navigation/routes";
+import authStorage from "../auth/storage";
+import { useAuth } from "../hooks/useAuth";
 
 const listings = [
   { title: "My Listings", icon: "menu", color: colors.danger },
@@ -20,13 +22,15 @@ interface Props {
 }
 
 const AccountScreen = ({ navigation }: Props) => {
+  const { user, logOut } = useAuth();
+
   return (
     <Wrapper style={{ backgroundColor: colors.light }}>
       <ListItem
         renderRightActions={() => null}
-        title="Mosh"
-        subtitle="A software developer"
-        image={require("../assets/mosh.jpg")}
+        title={user?.username ?? "username"}
+        subtitle={user?.email ?? "email@exmple.com"}
+        image={require("../assets/user_profile.webp")}
         onPress={() => {}}
       />
 
@@ -52,9 +56,7 @@ const AccountScreen = ({ navigation }: Props) => {
       />
 
       <ListItem
-        onPress={() => {
-          console.log("Logout");
-        }}
+        onPress={() => logOut()}
         title="Logout"
         IconComponent={
           <Icon

@@ -1,5 +1,4 @@
 import { FlatList, StyleSheet } from "react-native";
-// import ListItem from "../components/lists/ListItem";
 import ListItemSeparator from "../components/lists/ListItemSeparator";
 import Wrapper from "../components/Wrapper";
 import ListItemDeleteAction from "../components/lists/ListItemDeleteAction";
@@ -54,7 +53,7 @@ const MessageScreen = () => {
           <ListItem
             title={item.title}
             subtitle={item.description}
-            image={require("../assets/mosh.jpg")}
+            image={require("../assets/user_profile.webp")}
             onPress={() => {}}
             renderRightActions={() => (
               <ListItemDeleteAction onPress={() => handleOnPress(item)} />
@@ -68,7 +67,7 @@ const MessageScreen = () => {
               id: 3,
               title: "Message 3",
               description: "This is the third message",
-              image: "../assets/mosh.jpg",
+              image: "../assets/user_profile.webp",
             },
           ]);
         }}
