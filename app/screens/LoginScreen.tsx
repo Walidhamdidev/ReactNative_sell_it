@@ -38,7 +38,7 @@ const LoginScreen = () => {
     <>
       <ActivityIndicator visible={loginApi.loading} />
       <Wrapper style={styles.container}>
-        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
+        <Image style={styles.logo} source={require("../assets/logo.png")} />
 
         <AppForm
           initialValues={{ email: "", password: "" }}

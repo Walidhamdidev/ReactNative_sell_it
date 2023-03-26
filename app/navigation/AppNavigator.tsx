@@ -11,6 +11,7 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
 import { Platform } from "react-native";
+import logger from "../utility/logger";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -30,7 +31,7 @@ const AppNavigator = () => {
 
   useEffect(() => {
     registerForNotification();
-    console.log("Token:", expoPushToken);
+    logger.log("Token: " + expoPushToken);
   }, []);
 
   const registerForNotification = () => {
@@ -45,7 +46,7 @@ const AppNavigator = () => {
 
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
+        logger.log(response);
       });
 
     return () => {
@@ -56,52 +57,54 @@ const AppNavigator = () => {
     };
   };
 
-  <Tabs.Navigator
-    screenOptions={{
-      tabBarActiveTintColor: colors.danger,
-      tabBarShowLabel: false,
-    }}
-  >
-    <Tabs.Screen
-      name={routes.FEED}
-      component={FeedNavigator}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons name="home" size={size} color={color} />
-        ),
+  return (
+    <Tabs.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: colors.danger,
+        tabBarShowLabel: false,
       }}
-    />
-    <Tabs.Screen
-      name={routes.LISTING_EDIT}
-      component={ListingEditScreen}
-      options={({ navigation }) => ({
-        headerShown: false,
-        tabBarButton: () => (
-          <NewListingButton
-            onPress={() => navigation.navigate(routes.LISTING_EDIT)}
-          />
-        ),
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons
-            name="plus-circle"
-            size={size}
-            color={color}
-          />
-        ),
-      })}
-    />
-    <Tabs.Screen
-      name={routes.PROFILE}
-      component={AccountNavigator}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ size, color }) => (
-          <MaterialCommunityIcons name="account" size={size} color={color} />
-        ),
-      }}
-    />
-  </Tabs.Navigator>;
+    >
+      <Tabs.Screen
+        name={routes.FEED}
+        component={FeedNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name={routes.LISTING_EDIT}
+        component={ListingEditScreen}
+        options={({ navigation }) => ({
+          headerShown: false,
+          tabBarButton: () => (
+            <NewListingButton
+              onPress={() => navigation.navigate(routes.LISTING_EDIT)}
+            />
+          ),
+          tabBarIcon: ({ size, color }) => (
+            <MaterialCommunityIcons
+              name="plus-circle"
+              size={size}
+              color={color}
+            />
+          ),
+        })}
+      />
+      <Tabs.Screen
+        name={routes.PROFILE}
+        component={AccountNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="account" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tabs.Navigator>
+  );
 };
 
 async function schedulePushNotification() {
@@ -140,7 +143,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    logger.log(token);
   } else {
     alert("Must use physical device for Push Notifications");
   }

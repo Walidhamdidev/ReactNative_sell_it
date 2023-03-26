@@ -1,34 +1,39 @@
 {
   "expo": {
-    "name": "donewithit",
-    "slug": "donewithit",
+    "name": "SellIt",
+    "slug": "SellIt",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./app/assets/icon.png",
+    "icon": "./app/assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./app/assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#e63c4b"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.walido.donewithit"
+      "bundleIdentifier": "com.walidhamdi.sellit"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/logo-red.png",
+        "foregroundImage": "./app/assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.walido.donewithit"
+      "package": "com.walidhamdi.sellit"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
     },
     "extra": {
+      "bugsnag": {
+        "apiKey": "4bfb697b9e2cbd5cca2cd3062e190b71"
+      },
       "eas": {
-        "projectId": "cc81db40-9d5e-4771-8ced-268249249ce3"
+        "projectId": "4ec7dddf-07cf-4538-a5b0-aa9a5b070f79"
       }
     }
   }

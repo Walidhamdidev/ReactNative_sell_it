@@ -29,9 +29,7 @@ const ListingDetailsScreen = ({ route }: Props) => {
         title={user?.username ?? "username"}
         subtitle={user?.email ?? "email@exmple.com"}
         image={require("../assets/user_profile.webp")}
-        onPress={() => {
-          console.log("My name ");
-        }}
+        onPress={() => {}}
       />
     </ScrollView>
   );

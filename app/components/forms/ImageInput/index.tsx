@@ -32,7 +32,7 @@ const ImageInput = ({ image, onChange }: Props) => {
         "Are you sure you want to remove the image?",
         [
           { text: "Yes", onPress: () => onChange("") },
-          { text: "No", onPress: () => console.log("canceled") },
+          { text: "No", onPress: () => {} },
         ]
       );
     }
